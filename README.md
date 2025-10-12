@@ -31,6 +31,6 @@ This project was originally built for a college course and later **refactored** 
 ## 🧪 How to Run
 
 ```bash
-git 
+git clone https://github.com/CarbonCoder99/Banking-App/tree/master
 cd Banking-App
 python main.py
