@@ -398,6 +398,53 @@ def withdrawal():
 
     while True:
         try:
+            # Added instruction to quit
+            amount_input = input("Enter withdrawal amount (or 'exit' to cancel): ").strip()
+            
+            # 1. Allow user to cancel and return to menu
+            if amount_input.lower() == 'exit':
+                print("↩️ Withdrawal cancelled.")
+                time.sleep(0.5)
+                return  # Exits the function, returning to the logged-in menu loop
+
+            if not amount_input:
+                print("❌ Error: Withdrawal amount cannot be blank.")
+                continue
+            
+            amount = float(amount_input)
+            
+            if amount <= 0:
+                print("❌ Error: Withdrawal amount must be a positive number.")
+            elif amount > old_balance:
+                print("❌ Error: Insufficient funds. Please try a smaller amount.")
+                # IMPORTANT: Since this error occurs, the loop continues (no break)
+            else:
+                # 2. SUCCESS! Break the loop
+                break 
+                
+        except ValueError:
+            print("❌ Error: Invalid amount. Please enter a number.")
+            
+    # --- Execute Transaction (Only reached if loop breaks successfully) ---
+    new_balance = old_balance - amount
+    
+    update_balance(user_id, account_type, new_balance)
+
+    record_transaction(user_id, user['account_number'], "WITHDRAWAL", account_type, amount, old_balance, new_balance)
+
+    print(f"\n✅ Withdrawal of ${amount:,.2f} complete. New {account_type} balance: ${new_balance:,.2f}")
+    time.sleep(1)
+    """Handles withdrawal transaction with validation."""
+    user = LOGGED_IN_USER
+    print("\n--- WITHDRAWAL ---")
+    account_type = select_account_type()
+
+    user_id = user['id']
+    old_balance = get_balance(user_id, account_type)
+    print(f"Current {account_type} balance: ${old_balance:,.2f}")
+
+    while True:
+        try:
             amount_input = input("Enter withdrawal amount: ").strip()
             if not amount_input:
                 print("❌ Error: Withdrawal amount cannot be blank.")
@@ -456,7 +503,14 @@ def transfer():
     # Transfer Amount Validation
     while True:
         try:
-            amount_input = input("Enter Transfer Amount: ").strip()
+            amount_input = input("Enter Transfer Amount (or 'exit' to cancel): ").strip()
+
+            if amount_input.lower() == 'exit':
+                print("↩️ Transfer cancelled.")
+                time.sleep(0.5)
+                return  # Exits the function, returning to the logged-in menu loop
+
+
             if not amount_input:
                 print("❌ Error: Transfer amount cannot be blank.")
                 continue
