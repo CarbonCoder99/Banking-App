@@ -505,7 +505,7 @@ def transfer():
         try:
             amount_input = input("Enter Transfer Amount (or 'exit' to cancel): ").strip()
 
-            if amount_input.lower() == 'exit':
+            if not amount_input.lower() == 'exit':
                 print("↩️ Transfer cancelled.")
                 time.sleep(0.5)
                 return  # Exits the function, returning to the logged-in menu loop
